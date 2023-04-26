@@ -1,0 +1,27 @@
+.btn-margin {
+  margin: 0 10px !important;
+}
+.bottom {
+  margin-top: 15px;
+  margin-bottom: 50px;
+  width: 100% !important;
+}
+.col {
+  min-height: 45px;
+
+  border: 1px solid black;
+  border-top: 0px;
+
+  background-color: rgb(248, 248, 248);
+  text-align: center;
+}
+.bor-top {
+  font-weight: 700;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+}
+.tabel {
+  width: fit-content;
+  border: 5px;
+}

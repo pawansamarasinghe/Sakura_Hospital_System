@@ -1,0 +1,158 @@
+import "./style.css";
+import React, { Component } from "react";
+import axios from "axios";
+
+export default class editguard extends Component {
+  state = {
+    cid: "",
+    name: "",
+    nic: "",
+    email: "",
+    address: "",
+    age: "",
+  };
+
+  handleInputChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({
+      ...this.state,
+      [name]: value,
+    });
+  };
+
+  handleInputAge = (e) => {
+    if (e.target.value > 0 || e.target.value === "") {
+      this.setState({ ...this.state, [e.target.name]: e.target.value });
+    }
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    const id = this.props.match.params.id;
+    const { cid, name, nic, email, address, age } = this.state;
+
+    const data = {
+      cid: cid,
+      name: name,
+      nic: nic,
+      email: email,
+      address: address,
+      age: age,
+    };
+
+    axios.put(`/post/update/${id}`, data).then((res) => {
+      if (res.data.success) {
+        alert("Post updated successfully");
+        window.location.replace("http://localhost:3000/sechome");
+      }
+    });
+  };
+
+  componentDidMount() {
+    const id = this.props.match.params.id;
+    axios.get(`/post/singlepost/${id}`).then((res) => {
+      if (res.data.success) {
+        this.setState({
+          cid: res.data.post.cid,
+          name: res.data.post.name,
+          nic: res.data.post.nic,
+          email: res.data.post.email,
+          address: res.data.post.address,
+          age: res.data.post.age,
+        });
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div className="col-md-8 mt-4 mx-auto">
+        <h1 className="h3 mb-3 font-weight-normal">Edit Security Guard</h1>
+        <form className="needs-validation" onSubmit={this.onSubmit}>
+          <div className="form-group" style={{ marginBottom: "15px" }}>
+            <label style={{ marginBottom: "5px" }}>Guard ID Number</label>
+            <input
+              type="text"
+              className="form-control"
+              name="cid"
+              placeholder="Enter Drivers ID Number"
+              value={this.state.cid}
+              onChange={this.handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group" style={{ marginBottom: "15px" }}>
+            <label style={{ marginBottom: "5px" }}>Guard Name</label>
+            <input
+              type="text"
+              className="form-control"
+              name="name"
+              placeholder="Enter Guard Name"
+              value={this.state.name}
+              onChange={this.handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group" style={{ marginBottom: "15px" }}>
+            <label style={{ marginBottom: "5px" }}>NIC</label>
+            <input
+              type="text"
+              className="form-control"
+              name="nic"
+              placeholder="Enter NIC"
+              value={this.state.nic}
+              onChange={this.handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group" style={{ marginBottom: "15px" }}>
+            <label style={{ marginBottom: "5px" }}>Email</label>
+            <input
+              type="email"
+              className="form-control"
+              name="email"
+              placeholder="Enter email"
+              value={this.state.email}
+              onChange={this.handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group" style={{ marginBottom: "15px" }}>
+            <label style={{ marginBottom: "5px" }}>Address</label>
+            <input
+              type="text"
+              className="form-control"
+              name="address"
+              placeholder="Enter Address"
+              value={this.state.address}
+              onChange={this.handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group" style={{ marginBottom: "15px" }}>
+            <label style={{ marginBottom: "5px" }}>Age</label>
+            <input
+              type="number"
+              className="form-control"
+              name="age"
+              placeholder="Enter Age"
+              value={this.state.age}
+              onChange={this.handleInputAge}
+              required
+            />
+          </div>
+
+          <button className="btn btn-success btn-block bottom" type="submit">
+            <i className="far fa-check-square"></i>
+            &nbsp; UPDATE
+          </button>
+        </form>
+      </div>
+    );
+  }
+}
